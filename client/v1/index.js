@@ -47,8 +47,9 @@ console.log(MY_FAVORITE_BRANDS[0]);
 
 // 🎯 TODO: Number of products
 // 1. Create a variable and assign it the number of products
+var NumberOfProduct = marketplace.length
 // 2. Log the variable
-
+console.log(NumberOfProduct)
 
 // 🎯 TODO: Brands name
 // 1. Create a variable and assign it the list of brands name only
