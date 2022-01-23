@@ -30,8 +30,9 @@ console.log(MY_FAVORITE_BRANDS[0]);
 // 0. I have 3 favorite brands stored in MY_FAVORITE_BRANDS variable
 // 1. Create a new variable and assign it the link of the cheapest t-shirt
 // I can find on these e-shops
+const cheap_tshirt = "https://www.loom.fr/products/le-t-shirt";
 // 2. Log the variable
-
+console.log(cheap_tshirt);
 
 
 
@@ -47,27 +48,48 @@ console.log(MY_FAVORITE_BRANDS[0]);
 
 // 🎯 TODO: Number of products
 // 1. Create a variable and assign it the number of products
-var NumberOfProduct = marketplace.length
+var NumberOfProduct = marketplace.length;
 // 2. Log the variable
 console.log('this is the number of products:')
-console.log(NumberOfProduct)
+console.log(NumberOfProduct);
 
 // 🎯 TODO: Brands name
 // 1. Create a variable and assign it the list of brands name only
+var BrandsName =[]; 
+marketplace.forEach(brand => {
+if (brand in BrandsName == false)
+	BrandsName.push(brand.brand)});
 // 2. Log the variable
+const UniqueBrandsName = new Set(BrandsName);
+console.log(UniqueBrandsName);
 // 3. Log how many brands we have
+console.log(UniqueBrandsName.size);
 
 
 // 🎯 TODO: Sort by price
 // 1. Create a function to sort the marketplace products by price
+var sort;
+function sort_by_price(marketplace) 
+{
+	sort = marketplace.sort((a,b) => (a.price > b.price) ? 1 : -1);
+	return sort;
+}
 // 2. Create a variable and assign it the list of products by price from lowest to highest
+const marketplace_sorted_by_price = sort_by_price(marketplace);
 // 3. Log the variable
-
+console.table(marketplace_sorted_by_price);
 
 // 🎯 TODO: Sort by date
 // 1. Create a function to sort the marketplace objects by products date
+function sort_by_date(marketplace) 
+{
+	sort = marketplace.sort((a,b) => (Date.parse(a.date) > Date.parse(b.date)) ? 1 : -1);
+	return sort;
+}
 // 2. Create a variable and assign it the list of products by date from recent to old
+const marketplace_sorted_by_date = sort_by_date(marketplace);
 // 3. Log the variable
+console.table(marketplace_sorted_by_date);
 
 
 // 🎯 TODO: Filter a specific price range
