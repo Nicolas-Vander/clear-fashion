@@ -149,17 +149,26 @@ console.log(average);
 // 2. Log the variable
 // 3. Log the number of products by brands
 
+const brands = {};
+BrandsName.forEach(value => {brands[value] = []});
+marketplace.forEach(value => {brands[value.brand].push(value)});
+console.log(brands);
+
 
 // 🎯 TODO: Sort by price for each brand
 // 1. For each brand, sort the products by price, from highest to lowest
+BrandsName.forEach(value => {brands[value] = sort_by_price(brands[value])});
 // 2. Log the sort
-
-
+for (const key of Object.keys(brands)) {
+    console.table(brands[key])
+}
 // 🎯 TODO: Sort by date for each brand
 // 1. For each brand, sort the products by date, from old to recent
+BrandsName.forEach(value => {brands[value] = sort_by_date(brands[value])});
 // 2. Log the sort
-
-
+for (const key of Object.keys(brands)) {
+    console.table(brands[key])
+}
 
 
 
@@ -173,9 +182,10 @@ console.log(average);
 // 🎯 TODO: Compute the p90 price value
 // 1. Compute the p90 price value of each brand
 // The p90 value (90th percentile) is the lower value expected to be exceeded in 90% of the products
-
-
-
+BrandsName.forEach(value => {let numberOfValue = Math.round(brands[value].length*0.1);
+  let p90 = brands[value][numberOfValue].price; 
+  console.log(value + " : " + p90);
+});
 
 
 /**
