@@ -112,6 +112,8 @@ var index50 = (ListPrice.indexOf(50));
 var index100 = (ListPrice.indexOf(100));
 var marketplace_sorted_by_specific_price;
 marketplace_sorted_by_specific_price=marketplace_sorted_by_price.slice(index50,index100+1);
+//On aurait pu utiliser .filter ici 
+
 // 2. Log the list
 console.table(marketplace_sorted_by_specific_price);
 
@@ -311,10 +313,11 @@ blueJacket = {
 };
 
 // 3. Update `jacket` property with `favorite` to true WITHOUT changing blueJacket properties
-
-
-
-
+blueJacket.favorite = false;
+jacket = JSON.parse(JSON.stringify(blueJacket));
+jacket.favorite=true;
+console.log(blueJacket);
+console.log(jacket);
 
 /**
  * 🎬
