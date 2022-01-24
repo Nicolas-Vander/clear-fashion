@@ -264,16 +264,26 @@ const COTELE_PARIS = [
 // 🎯 TODO: Reasonable price
 // // 1. Log if coteleparis is a reasonable price shop (true or false)
 // // A reasonable price if all the products are less than 100€
+let testPrice = true;
+COTELE_PARIS.forEach(value => {if(value.price > 100){testPrice = false}});
+console.log("The shop only has reasonable prices : " + testPrice);
 
 
 // 🎯 TODO: Find a specific product
 // 1. Find the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
+let product = "";
+COTELE_PARIS.forEach(value => {if(value.uuid == `b56c6d88-749a-5b4c-b571-e5b5c6483131`) {product = value}});
 // 2. Log the product
+console.log(product);
 
 
 // 🎯 TODO: Delete a specific product
 // 1. Delete the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
+for(let a = 0; a < COTELE_PARIS.length; a++){
+  if(COTELE_PARIS[a].uuid == `b56c6d88-749a-5b4c-b571-e5b5c6483131`) {COTELE_PARIS.splice(a,1)}
+}
 // 2. Log the new list of product
+console.table(COTELE_PARIS);
 
 // 🎯 TODO: Save the favorite product
 let blueJacket = {
@@ -289,7 +299,10 @@ let jacket = blueJacket;
 jacket.favorite = true;
 
 // 1. Log `blueJacket` and `jacket` variables
+console.log(blueJacket);
+console.log(jacket);
 // 2. What do you notice?
+//Both have a new attribute "fav". 
 
 blueJacket = {
   'link': 'https://coteleparis.com/collections/tous-les-produits-cotele/products/la-veste-bleu-roi',
