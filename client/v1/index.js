@@ -56,9 +56,7 @@ console.log(NumberOfProduct);
 // 🎯 TODO: Brands name
 // 1. Create a variable and assign it the list of brands name only
 var BrandsName =[]; 
-marketplace.forEach(brand => {
-if (brand in BrandsName == false)
-	BrandsName.push(brand.brand)});
+marketplace.forEach(value => {BrandsName.push(value.brand)});
 // 2. Log the variable
 const UniqueBrandsName = new Set(BrandsName);
 console.log(UniqueBrandsName);
@@ -71,11 +69,11 @@ console.log(UniqueBrandsName.size);
 var sort;
 function sort_by_price(marketplace) 
 {
-	sort = marketplace.sort((a,b) => (a.price > b.price) ? 1 : -1);
+	sort = marketplace.sort((value1,value2) => (value1.price > value2.price) ? 1 : -1);
 	return sort;
 }
 // 2. Create a variable and assign it the list of products by price from lowest to highest
-const marketplace_sorted_by_price = sort_by_price(marketplace);
+var marketplace_sorted_by_price = sort_by_price(marketplace);
 // 3. Log the variable
 console.table(marketplace_sorted_by_price);
 
@@ -83,7 +81,7 @@ console.table(marketplace_sorted_by_price);
 // 1. Create a function to sort the marketplace objects by products date
 function sort_by_date(marketplace) 
 {
-	sort = marketplace.sort((a,b) => (Date.parse(a.date) > Date.parse(b.date)) ? 1 : -1);
+	sort = marketplace.sort((value1,value2) => (Date.parse(value1.date) > Date.parse(value2.date)) ? 1 : -1);
 	return sort;
 }
 // 2. Create a variable and assign it the list of products by date from recent to old
@@ -94,13 +92,36 @@ console.table(marketplace_sorted_by_date);
 
 // 🎯 TODO: Filter a specific price range
 // 1. Filter the list of products between 50€ and 100€
+var ListPrice =[]; 
+marketplace_sorted_by_price.forEach(value => {ListPrice.push(value.price)});
+var temp;
+for(var a = 0; a < ListPrice.length; a++)
+      {
+         for(var b = a + 1; b < ListPrice.length; b++)
+         {
+            if(ListPrice[a] > ListPrice[b])
+            {
+               temp = ListPrice[a];
+               ListPrice[a] = ListPrice[b];
+               ListPrice[b] = temp;
+            }
+         }
+      }
+marketplace_sorted_by_price = sort_by_price(marketplace);
+var index50 = (ListPrice.indexOf(50));
+var index100 = (ListPrice.indexOf(100));
+var marketplace_sorted_by_specific_price;
+marketplace_sorted_by_specific_price=marketplace_sorted_by_price.slice(index50,index100+1);
 // 2. Log the list
-
+console.table(marketplace_sorted_by_specific_price);
 
 // 🎯 TODO: Average price
 // 1. Determine the average price of the marketplace
+let sum = 0; 
+ListPrice.forEach(value => {sum += value});
+var average = sum / marketplace.length;
 // 2. Log the average
-
+console.log(average);
 
 
 
