@@ -8,6 +8,7 @@ let currentPagination = {};
 // inititiqte selectors
 const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
+const selectBrand = document.querySelector('#brand-select');
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 
@@ -121,6 +122,13 @@ selectPage.addEventListener('change', event => {
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
 });
+
+selectBrand.addEventListener('change', event => {
+  fetchProducts(currentPagination.currentPage, parseInt(event.target.value))
+    .then(setCurrentProducts)
+    .then(() => render(currentProducts, currentPagination));
+});
+
 
 document.addEventListener('DOMContentLoaded', () =>
   fetchProducts()
