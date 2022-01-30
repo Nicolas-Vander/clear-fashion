@@ -4,7 +4,7 @@
 // current products on the page
 let currentProducts = [];
 let currentPagination = {};
-
+let brand = '';
 // inititiqte selectors
 const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
@@ -28,10 +28,10 @@ const setCurrentProducts = ({result, meta}) => {
  * @param  {Number}  [size=12] - size of the page
  * @return {Object}
  */
-const fetchProducts = async (page = 1, size = 12) => {
+const fetchProducts = async (page = 1, size = 12, brand = '') => {
   try {
     const response = await fetch(
-      `https://clear-fashion-api.vercel.app?page=${page}&size=${size}`
+      `https://clear-fashion-api.vercel.app?page=${page}&size=${size}&brand=${brand}`
     );
     const body = await response.json();
 
@@ -103,6 +103,33 @@ const render = (products, pagination) => {
   renderIndicators(pagination);
 };
 
+async function getAllItems (listOfItems, count){
+  const data = await fetchProducts(1, count)
+  for (let i = 0; i < data.result.length; i++){
+    const item = data.result[i]
+    if (!listOfItems[item.brand]){
+      listOfItems[item.brand] = true;
+    }
+  }
+  return listOfItems
+}
+
+/* function getAllItems (listOfItems, count){
+  return new Promise((resolve, reject) => {
+    fetchProducts(1, count)
+    .then((data) => {
+      for (let i = 0; i < data.result.length; i++){
+        const item = data.result[i]
+        if (!listOfItems[item.brand]){
+          listOfItems[item.brand] = true;
+        }
+      }
+      resolve(listOfItems)
+    })
+  })
+} */
+
+
 /**
  * Declaration of all Listeners
  */
@@ -112,20 +139,21 @@ const render = (products, pagination) => {
  * @type {[type]}
  */
 selectShow.addEventListener('change', event => {
-  fetchProducts(1, parseInt(event.target.value))
+  fetchProducts(1, parseInt(event.target.value), brand)
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
 });
 
 selectPage.addEventListener('change', event => {
   var selectedPage = event.target.value;
-  fetchProducts(selectedPage, currentPagination.pageSize)
+  fetchProducts(selectedPage, currentPagination.pageSize, brand)
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
 });
 
 selectBrand.addEventListener('change', event => {
-  fetchProducts(currentPagination.currentPage, parseInt(event.target.value))
+  brand = event.target.value;
+  fetchProducts(1, currentPagination.pageSize, brand)
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
 });
@@ -135,4 +163,13 @@ document.addEventListener('DOMContentLoaded', () =>
   fetchProducts()
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination))
+    .then(() => getAllItems({}, currentPagination.count))
+    .then((listOfItems) => {
+      const options = [];
+      options.push(selectBrand.innerHTML)
+      for(let key in listOfItems){
+        options.push(`<option value="${key}">${key}</option>`)
+      }
+      selectBrand.innerHTML = options.join('');
+    })
 );
