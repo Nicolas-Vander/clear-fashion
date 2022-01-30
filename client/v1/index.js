@@ -66,9 +66,9 @@ console.log(UniqueBrandsName.size);
 
 // 🎯 TODO: Sort by price
 // 1. Create a function to sort the marketplace products by price
-var sort;
 function sort_by_price(marketplace) 
 {
+  var sort;
 	sort = marketplace.sort((value1,value2) => (value1.price > value2.price) ? 1 : -1);
 	return sort;
 }
@@ -77,10 +77,13 @@ var marketplace_sorted_by_price = sort_by_price(marketplace);
 // 3. Log the variable
 console.table(marketplace_sorted_by_price);
 
+
+
 // 🎯 TODO: Sort by date
 // 1. Create a function to sort the marketplace objects by products date
 function sort_by_date(marketplace) 
 {
+  var sort;
 	sort = marketplace.sort((value1,value2) => (Date.parse(value1.date) > Date.parse(value2.date)) ? 1 : -1);
 	return sort;
 }
@@ -318,7 +321,7 @@ jacket = JSON.parse(JSON.stringify(blueJacket));
 jacket.favorite=true;
 console.log(blueJacket);
 console.log(jacket);
-
+console.log('fin du td');
 /**
  * 🎬
  * The End
