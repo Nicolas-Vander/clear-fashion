@@ -10,6 +10,7 @@ let brand = '';
 let allProducts = [];
 let recent = false;
 let recentSorted = [];
+let sort = [];
 // inititiqte selectors
 const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
@@ -136,13 +137,15 @@ async function getAllItems (listOfItems,products,count){
   })
 } */
 
-/* let sort;
-sort = {... allProducts};
-sort.sort((value1,value2) => (value1.price > value2.price) ? 1 : -1);
-  */
+function sort_by_price(allProducts) 
+{
+  sort = {... allProducts};
+	sort.sort((value1,value2) => (value1.price > value2.price) ? 1 : -1);
+	return sort;
+}
 
 function sortRecentProduct (allProducts, sort){
-  let twoWeeksAgo = new Date(Date.now() - 12096e10); //12096e5 is two weeks in miliseconds
+  let twoWeeksAgo = new Date(Date.now() - 1209600000000000); //12096e5 is two weeks in miliseconds
   for(let i = 0; i < allProducts.length; i++){
     let d = new Date(allProducts[i].released); 
     if(d.getTime() < twoWeeksAgo.getTime()){allProducts[i].newProducts = true}
