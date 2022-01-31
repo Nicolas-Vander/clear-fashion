@@ -5,6 +5,7 @@
 let currentProducts = [];
 let currentPagination = {};
 let brand = '';
+let allProducts = [];
 // inititiqte selectors
 const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
@@ -103,15 +104,16 @@ const render = (products, pagination) => {
   renderIndicators(pagination);
 };
 
-async function getAllItems (listOfItems, count){
+async function getAllItems (listOfItems,products,count){
   const data = await fetchProducts(1, count)
   for (let i = 0; i < data.result.length; i++){
     const item = data.result[i]
+    products.push(item);
     if (!listOfItems[item.brand]){
       listOfItems[item.brand] = true;
     }
   }
-  return listOfItems
+  return {listOfItems, products}
 }
 
 /* function getAllItems (listOfItems, count){
@@ -127,6 +129,22 @@ async function getAllItems (listOfItems, count){
       resolve(listOfItems)
     })
   })
+} */
+/* let sort;
+sort = {... allProducts};
+sort.sort((value1,value2) => (value1.price > value2.price) ? 1 : -1);
+ */
+/* function sortRecentProduct (allProducts, sort){
+  let twoWeeksAgo = new Date(Date.now() - 12096e5); //12096e5 is two weeks in miliseconds
+  for(let i = 0; i < allProducts.length; i++){
+    let d = new Date(allProducts[i].released); 
+    if(d.getTime() < twoWeeksAgo.getTime()){allProducts[i].newProducts = true}
+    else {allProducts[i].newProducts = false}
+    if(allProducts[i] == true){
+      sort.push(allProducts[i]);
+    }
+  }
+  console.log("New products only : " + sort);
 } */
 
 
@@ -163,8 +181,9 @@ document.addEventListener('DOMContentLoaded', () =>
   fetchProducts()
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination))
-    .then(() => getAllItems({}, currentPagination.count))
-    .then((listOfItems) => {
+    .then(() => getAllItems({},[],currentPagination.count))
+    .then(({listOfItems, products}) => {
+      allProducts = products;
       const options = [];
       options.push(selectBrand.innerHTML)
       for(let key in listOfItems){
