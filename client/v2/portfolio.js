@@ -4,12 +4,17 @@
 // current products on the page
 let currentProducts = [];
 let currentPagination = {};
+
+// all my needed var
 let brand = '';
 let allProducts = [];
+let recent = false;
+let recentSorted = [];
 // inititiqte selectors
 const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
 const selectBrand = document.querySelector('#brand-select');
+const selectRecent = document.querySelector('#recent-select');
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 
@@ -130,23 +135,24 @@ async function getAllItems (listOfItems,products,count){
     })
   })
 } */
+
 /* let sort;
 sort = {... allProducts};
 sort.sort((value1,value2) => (value1.price > value2.price) ? 1 : -1);
- */
-/* function sortRecentProduct (allProducts, sort){
-  let twoWeeksAgo = new Date(Date.now() - 12096e5); //12096e5 is two weeks in miliseconds
+  */
+
+function sortRecentProduct (allProducts, sort){
+  let twoWeeksAgo = new Date(Date.now() - 12096e10); //12096e5 is two weeks in miliseconds
   for(let i = 0; i < allProducts.length; i++){
     let d = new Date(allProducts[i].released); 
     if(d.getTime() < twoWeeksAgo.getTime()){allProducts[i].newProducts = true}
     else {allProducts[i].newProducts = false}
-    if(allProducts[i] == true){
+    if(allProducts[i].newProducts == true){
       sort.push(allProducts[i]);
     }
   }
-  console.log("New products only : " + sort);
-} */
-
+  return sort;
+}
 
 /**
  * Declaration of all Listeners
@@ -176,6 +182,12 @@ selectBrand.addEventListener('change', event => {
     .then(() => render(currentProducts, currentPagination));
 });
 
+selectRecent.addEventListener('change', event => {
+  recent = event.target.value;
+  if (recent == true){
+    recentSorted = sortRecentProduct(allProducts, []);
+  }
+});
 
 document.addEventListener('DOMContentLoaded', () =>
   fetchProducts()
