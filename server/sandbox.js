@@ -45,4 +45,16 @@ async function display() {
   console.log(result)
 }
 
-display()
+
+async function saveFile() {
+  const result = await loadResult()
+  var jsonData = JSON.stringify(result);
+  var fs = require('fs');
+  fs.writeFile("ProductScrapped.json", jsonData, function(err) {
+      if (err) {
+          console.log(err);
+      }
+  });
+  console.log(result)
+}
+saveFile()
