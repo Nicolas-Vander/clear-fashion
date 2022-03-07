@@ -1,13 +1,19 @@
-require('dotenv').config();
+//require('dotenv').config();
+//const {MongoClient} = require('mongodb');
+//const fs = require('fs');
+'use require';
 const {MongoClient} = require('mongodb');
-const fs = require('fs');
-
-const MONGODB_DB_NAME = 'clearfashion';
+const MONGODB_DB_NAME = 'WAA';
 const MONGODB_COLLECTION = 'products';
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = 'mongodb+srv://dwh:<password>@waa.q7jsu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
-let client = null;
-let database = null;
+//let client = await MongoClient.connect(MONGODB_URI, {'useNewUrlParser': true});
+let database = client.db(MONGODB_DB_NAME)
+
+
+const collection = db.collection('products');
+const result = collection.insertMany(products);
+console.log("test");
 
 /**
  * Get db connection

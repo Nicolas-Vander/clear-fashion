@@ -1,5 +1,11 @@
 // Invoking strict mode https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode#invoking_strict_mode
 'use strict';
+import fetch from 'node-fetch';
+
+const response = await fetch('https://github.com/');
+const body = await response.text();
+
+console.log(body);
 
 // current products on the page
 let currentProducts = [];
