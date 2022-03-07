@@ -1,6 +1,7 @@
 /* eslint-disable no-console, no-process-exit */
 const { load } = require('cheerio');
 const dedicatedbrand = require('./sources/dedicatedbrand');
+const db = require('./db');
 
 async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/loadfilter', siteName) {
   try {
@@ -55,6 +56,7 @@ async function saveFile() {
           console.log(err);
       }
   });
+  db.insert(result);
   console.log(result)
 }
 saveFile()
