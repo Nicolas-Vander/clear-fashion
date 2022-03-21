@@ -19,10 +19,6 @@ const [,, eshop] = process.argv;
 
 async function loadResult() {
   const products = []
-
-  const result = await sandbox('https://www.dedicatedbrand.com/en/loadfilter', 'dedicated');
-  products.push(...result)
-
   let i = 1
   let loopShouldBeOver = false
   let previousResult
@@ -37,6 +33,10 @@ async function loadResult() {
     products.push(...result)
     i++;
   }
+  const result = await sandbox('https://www.dedicatedbrand.com/en/loadfilter', 'dedicated');
+  products.push(...result)
+
+
 
   return products
 }
@@ -68,9 +68,9 @@ async function saveFile() {
   });
   //await db.insert(result);
   console.log(result);
-  const definedPrice = await lessThan(30);
+  //const definedPrice = await lessThan(30);
   //const orderedByPrice = await sort_by_price(result);
-  console.log(definedPrice);
+  //console.log(definedPrice);
   //await db.deleteDatabase();
   await process.exit(1);
 }

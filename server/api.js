@@ -32,8 +32,14 @@ app.get('/products', async(request, response) => {
 })
 
 // Get products from a specific brand 
-app.get('/products/brand=', async(request, response) => {
-  products = await db.findProducts({'brand': 'adresse'}, false)
+app.get('/products/dedicated', async(request, response) => {
+  products = await db.find({'brandName': 'dedicated'}, false)
+  console.log(products.length)
+  response.send({"products" : products});
+})
+
+app.get('/products/montlimart', async(request, response) => {
+  products = await db.find({'brandName': 'montlimart'}, false)
   console.log(products.length)
   response.send({"products" : products});
 })

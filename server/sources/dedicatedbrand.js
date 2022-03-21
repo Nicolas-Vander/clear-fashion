@@ -39,7 +39,7 @@ const parse = (data, siteName) => {
         .find('.price')
         .text()
 
-      return {name, price: parseInt(price.slice(0, -2)), siteName};
+      return {name, price: parseInt(price.slice(0, -2)), brandName: siteName};
     })
     .get()
     .filter(function (val) {
