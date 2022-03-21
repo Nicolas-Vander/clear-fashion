@@ -1,10 +1,9 @@
 require('dotenv').config();
 const {MongoClient} = require('mongodb');
 const fs = require('fs');
-
 const MONGODB_DB_NAME = 'WAA';
 const MONGODB_COLLECTION = 'products';
-const MONGODB_URI = 'mongodb+srv://dwh:dwh@waa.q7jsu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const MONGODB_URI = 'mongodb+srv://test:test@waa.q7jsu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
 let client = null;
 let database = null;
@@ -19,16 +18,15 @@ const getDB = module.exports.getDB = async () => {
       console.log('💽  Already Connected');
       return database;
     }
-
     client = await MongoClient.connect(MONGODB_URI, {'useNewUrlParser': true});
     database = client.db(MONGODB_DB_NAME);
-
     console.log('💽  Connected');
-
     return database;
-  } catch (error) {
+  } 
+  catch (error) {
     console.error('🚨 MongoClient.connect...', error);
     return null;
+    
   }
 };
 
@@ -38,11 +36,9 @@ const getDB = module.exports.getDB = async () => {
  * @return {Object}
  */
 module.exports.insert = async products => {
-  try {
+  try { 
     const db = await getDB();
     const collection = db.collection(MONGODB_COLLECTION);
-    // More details
-    // https://docs.mongodb.com/manual/reference/method/db.collection.insertMany/#insert-several-document-specifying-an-id-field
     const result = await collection.insertMany(products, {'ordered': false});
     return result;
   } catch (error) {
@@ -82,4 +78,3 @@ module.exports.close = async () => {
     console.error('🚨 MongoClient.close...', error);
   }
 };
-process.exit(1);
