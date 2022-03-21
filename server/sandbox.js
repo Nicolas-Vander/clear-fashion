@@ -40,13 +40,25 @@ async function loadResult() {
 
   return products
 }
+
+async function lessThan(price){
+  return {price: {"$lte" : parseInt(price,10)}}
+}
+
+async function sort_by_price(allProducts) 
+{
+  sort = {... allProducts};
+	sort.sort((value1,value2) => (value1.price > value2.price) ? 1 : -1);
+	return sort;
+}
+
 async function display() {
   const result = await loadResult()
   console.log(result)
 }
 
 async function saveFile() {
-  const result = await loadResult()
+  const result = await loadResult();
   var jsonData = JSON.stringify(result);
   var fs = require('fs');
   fs.writeFile("ProductScrapped.json", jsonData, function(err) {
@@ -54,8 +66,12 @@ async function saveFile() {
           console.log(err);
       }
   });
-  await db.insert(result);
-  console.log(result)
+  //await db.insert(result);
+  console.log(result);
+  const definedPrice = await lessThan(30);
+  //const orderedByPrice = await sort_by_price(result);
+  console.log(definedPrice);
+  //await db.deleteDatabase();
   await process.exit(1);
 }
 saveFile()

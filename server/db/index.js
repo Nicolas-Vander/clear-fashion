@@ -2,7 +2,7 @@ require('dotenv').config();
 const {MongoClient} = require('mongodb');
 const fs = require('fs');
 const MONGODB_DB_NAME = 'WAA';
-const MONGODB_COLLECTION = 'products';
+const MONGODB_COLLECTION = 'FinalProducts';
 const MONGODB_URI = 'mongodb+srv://test:test@waa.q7jsu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
 let client = null;
@@ -65,6 +65,35 @@ module.exports.find = async query => {
   } catch (error) {
     console.error('🚨 collection.find...', error);
     return null;
+  }
+};
+
+/**
+ * Function to find all products of the collection
+ */
+ module.exports.findAllProducts = async (printResults = false) => {
+  const db = await getDB();
+  const result = await db.collection(MONGODB_COLLECTION).find().toArray()
+  if(printResults){
+      console.log(' 🧐 Find: All products', );
+      console.log(` 📄 ${result.length} documents found:`);
+      await result.forEach(doc => console.log(doc));
+  }
+  return result
+}
+
+/**
+ * Empty collection
+ */
+ module.exports.deleteDatabase = async () => {
+  try {
+    const db = await getDB();
+    const collection = db.collection(MONGODB_COLLECTION);
+    collection.deleteMany();
+    console.log("Everything has been deleted");
+  } 
+  catch (error) {
+    console.error('🚨 collection.find...', error);
   }
 };
 
