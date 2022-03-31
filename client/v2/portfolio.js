@@ -1,11 +1,5 @@
 // Invoking strict mode https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode#invoking_strict_mode
 'use strict';
-import fetch from 'node-fetch';
-
-const response = await fetch('https://github.com/');
-const body = await response.text();
-
-console.log(body);
 
 // current products on the page
 let currentProducts = [];
@@ -13,7 +7,7 @@ let currentPagination = {};
 let currentBrand = 'all';
 
 // all my needed var
-let brand = '';
+let brandName = '';
 let allProducts = [];
 let recent = false;
 let recentSorted = [];
@@ -42,14 +36,15 @@ const setCurrentProducts = ({result, meta}) => {
  * @param  {Number}  [limit=12] - size of the page
  * @return {Object}
  */
-const fetchProducts = async (page = 1, limit = 12, brand = '') => {
+const fetchProducts = async (page = 1, limit = 12, brandName = currentBrand) => {
   try {
+    currentBrand = brandName;
     const response = await fetch(
-      //`https://clear-fashion-api.vercel.app?page=${page}&size=${size}&brand=${brand}`
-      `https://clear-fashion-server-psi.vercel.app/products/search?page=${page}&limit=${limit}&brand=${brand}`
+      //`https://clear-fashion-api.vercel.app?page=${page}&size=${size}&brandName=${brandName}`
+      `https://clear-fashion-nine-lac.vercel.app/products/search?page=${page}&limit=${limit}&brand=${brandName}`
     );
     const body = await response.json();
-
+    console.log(body)
     if (body.success !== true) {
       console.error(body);
       return {currentProducts, currentPagination};
@@ -107,44 +102,13 @@ const renderProducts = products => {
     products = recent;
   }
 
-  // reasonable price, ie, less than 50€
-  if(selectReasonable.options[selectReasonable.selectedIndex].value == 'yes'){
-    const reasonable = products.filter(product => product.price <= 50);
-    products = reasonable;
-  }
-
-  // sort by price asc
-  if(selectSort.options[selectSort.selectedIndex].value == 'price-asc'){
-    products.sort((a, b) => a.price - b.price);
-  }
-
-  // sort by price desc
-  if(selectSort.options[selectSort.selectedIndex].value == 'price-desc'){
-    products.sort((a, b) => b.price - a.price);
-  }
-
-  // sort by date asc
-  if(selectSort.options[selectSort.selectedIndex].value == 'date-asc'){
-    products.sort((a, b) => new Date(b.released) - new Date(a.released));
-  }
-
-  // sort by date desc
-  if(selectSort.options[selectSort.selectedIndex].value == 'date-desc'){
-    products.sort((a, b) => new Date(a.released) - new Date(b.released));
-  }
-
-  // filter by favorite
-  if(selectFavorite.options[selectFavorite.selectedIndex].value == 'yes'){
-    const fav = products.filter(product => product.favorite);
-    products = fav;
-  }
-
+ 
   const template = products
     .map(product => {
       return `
       <div class="product" id=${product.uuid}>
         <input type="checkbox" id="add-favorite">
-        <span>${product.brand}</span>
+        <span>${product.brandName}</span>
         <a href="${product.link}">${product.name}</a>
         <span>${product.price}</span>
       </div>
@@ -193,8 +157,8 @@ async function getAllItems (listOfItems,products,count){
   for (let i = 0; i < data.result.length; i++){
     const item = data.result[i]
     products.push(item);
-    if (!listOfItems[item.brand]){
-      listOfItems[item.brand] = true;
+    if (!listOfItems[item.brandName]){
+      listOfItems[item.brandName] = true;
     }
   }
   return {listOfItems, products}
@@ -251,14 +215,14 @@ selectShow.addEventListener('change', event => {
 
 selectPage.addEventListener('change', event => {
   var selectedPage = event.target.value;
-  fetchProducts(selectedPage, currentPagination.pageSize, brand)
+  fetchProducts(parseInt(selectedPage), currentPagination.pageSize)
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
 });
 
 selectBrand.addEventListener('change', event => {
-  brand = event.target.value;
-  fetchProducts(1, currentPagination.pageSize, brand)
+  brandName = event.target.value;
+  fetchProducts(1, currentPagination.pageSize, brandName)
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
 });
