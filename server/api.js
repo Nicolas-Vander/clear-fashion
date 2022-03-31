@@ -45,12 +45,15 @@ app.get('/products/montlimart', async(request, response) => {
 })
 
 // Get products from a specific id
-app.get('/products/:_id',  async(request, response) => {
-  products = await db.findProducts({'_id': new ObjectId(request.params._id)}, false)
-  response.send({"count" : products.length, "products" : products});
-})
-
-
+app.get('/products/:id', async (request, response) => { 
+  const id = request.params.id
+  console.log(id)
+  items = db.find()
+  .then((item) => {
+    products = item.filter(i => i._id == id)
+    response.send(products)
+  });
+});
 async function main(){
   await connection();
   app.listen(PORT);
