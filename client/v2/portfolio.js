@@ -66,6 +66,8 @@ const fetchProducts = async (page = 1, limit = 12, brand = '') => {
  * Render list of products
  * @param  {Array} products
  */
+
+/*
 const renderProducts = products => {
   const fragment = document.createDocumentFragment();
   const div = document.createElement('div');
@@ -81,6 +83,74 @@ const renderProducts = products => {
     })
     .join('');
 
+  div.innerHTML = template;
+  fragment.appendChild(div);
+  sectionProducts.innerHTML = '<h2>Products</h2>';
+  sectionProducts.appendChild(fragment);
+};
+*/
+const renderProducts = products => {
+  const fragment = document.createDocumentFragment();
+  const div = document.createElement('div');
+
+  if(selectRecent.options[selectRecent.selectedIndex].value == 'yes'){
+    const recent = [];
+    var today = new Date().getTime();
+    var week = 1000*60*60*24*7;
+    products.forEach(product => {
+      var date = new Date(product.released).getTime();
+      var diff = Math.abs(today - date);
+      if(diff <= 2*week){
+        recent.push(product);
+      }
+    });
+    products = recent;
+  }
+
+  // reasonable price, ie, less than 50€
+  if(selectReasonable.options[selectReasonable.selectedIndex].value == 'yes'){
+    const reasonable = products.filter(product => product.price <= 50);
+    products = reasonable;
+  }
+
+  // sort by price asc
+  if(selectSort.options[selectSort.selectedIndex].value == 'price-asc'){
+    products.sort((a, b) => a.price - b.price);
+  }
+
+  // sort by price desc
+  if(selectSort.options[selectSort.selectedIndex].value == 'price-desc'){
+    products.sort((a, b) => b.price - a.price);
+  }
+
+  // sort by date asc
+  if(selectSort.options[selectSort.selectedIndex].value == 'date-asc'){
+    products.sort((a, b) => new Date(b.released) - new Date(a.released));
+  }
+
+  // sort by date desc
+  if(selectSort.options[selectSort.selectedIndex].value == 'date-desc'){
+    products.sort((a, b) => new Date(a.released) - new Date(b.released));
+  }
+
+  // filter by favorite
+  if(selectFavorite.options[selectFavorite.selectedIndex].value == 'yes'){
+    const fav = products.filter(product => product.favorite);
+    products = fav;
+  }
+
+  const template = products
+    .map(product => {
+      return `
+      <div class="product" id=${product.uuid}>
+        <input type="checkbox" id="add-favorite">
+        <span>${product.brand}</span>
+        <a href="${product.link}">${product.name}</a>
+        <span>${product.price}</span>
+      </div>
+    `;
+    })
+    .join('');
   div.innerHTML = template;
   fragment.appendChild(div);
   sectionProducts.innerHTML = '<h2>Products</h2>';
