@@ -208,7 +208,7 @@ function sortRecentProduct (allProducts, sort){
  * @type {[type]}
  */
 selectShow.addEventListener('change', event => {
-  fetchProducts(1, parseInt(event.target.value), brand)
+  fetchProducts(1, parseInt(event.target.value))
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
 });
